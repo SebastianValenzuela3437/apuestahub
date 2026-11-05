@@ -9,6 +9,9 @@
 
     <title>ApuestaHub - Iniciar Sesión</title>
 
+    <!-- Librería de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
 
         * {
@@ -139,6 +142,12 @@
             transform: translateY(-1px);
         }
 
+        .boton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .mensaje {
             min-height: 20px;
 
@@ -242,15 +251,15 @@
 
             <div class="campo">
 
-                <label for="usuario">
-                    Usuario
+                <label for="correo">
+                    Correo electrónico
                 </label>
 
                 <input
-                    type="text"
-                    id="usuario"
-                    placeholder="Ingresa tu usuario"
-                    autocomplete="username"
+                    type="email"
+                    id="correo"
+                    placeholder="Ingresa tu correo"
+                    autocomplete="email"
                     required
                 >
 
@@ -276,6 +285,7 @@
 
             <button
                 type="submit"
+                id="botonLogin"
                 class="boton"
             >
                 Iniciar sesión
@@ -302,59 +312,147 @@
                 Crear cuenta
             </a>
 
+        </div>
 
-<script>
-    const formularioLogin = document.getElementById("formLogin");
 
-    formularioLogin.addEventListener("submit", function(event) {
-        event.preventDefault();
+        <p class="informacion">
+            ApuestaHub es un proyecto académico informativo.
+        </p>
 
-        const usuario = document.getElementById("usuario").value.trim();
-        const password = document.getElementById("password").value;
-        const mensaje = document.getElementById("mensaje");
 
-        let usuarios = [];
+    </div>
 
-        try {
-            const datos = localStorage.getItem("usuariosApuestaHub");
 
-            if (datos !== null) {
-                usuarios = JSON.parse(datos);
+    <script>
+
+        /* ========================================
+           CONEXIÓN A SUPABASE
+           Reemplaza estos dos valores por los tuyos
+        ======================================== */
+
+        const SUPABASE_URL = "https://TU_PROYECTO.supabase.co";
+        const SUPABASE_KEY = "TU_CLAVE_PUBLICA";   // Publishable key o anon key
+
+        const supabaseClient = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+        /* ========================================
+           SI YA HAY SESIÓN, IR AL HOME
+        ======================================== */
+
+        (async function() {
+
+            try {
+
+                const { data } =
+                    await supabaseClient.auth.getSession();
+
+                if (data.session) {
+                    window.location.href = "home.html";
+                }
+
+            } catch (error) {
+
+                console.error("Error al revisar la sesión:", error);
+
             }
-        } catch (error) {
-            console.error("Error al leer los usuarios:", error);
-            usuarios = [];
-        }
 
-        const usuarioEncontrado = usuarios.find(function(usuarioGuardado) {
-            return (
-                usuarioGuardado.usuario === usuario &&
-                usuarioGuardado.password === password
-            );
-        });
-
-        if (usuarioEncontrado) {
-
-            // Guardar la sesión
-            localStorage.setItem(
-                "sesionApuestaHub",
-                usuarioEncontrado.usuario
-            );
-
-            mensaje.style.color = "#FFD166";
-            mensaje.textContent = "Inicio de sesión correcto.";
-
-            // Ir directamente al Home
-            window.location.href = "home.html";
-
-        } else {
-
-            mensaje.style.color = "#FF6B6B";
-            mensaje.textContent =
-                "Inicio de sesión inválido. Verifica tus credenciales.";
-        }
-    });
-</script>
+        })();
 
 
+        /* ========================================
+           INICIO DE SESIÓN
+        ======================================== */
 
+        const formularioLogin =
+            document.getElementById("formLogin");
+
+        const botonLogin =
+            document.getElementById("botonLogin");
+
+        const mensaje =
+            document.getElementById("mensaje");
+
+
+        formularioLogin.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                const correo =
+                    document.getElementById("correo")
+                    .value
+                    .trim();
+
+                const password =
+                    document.getElementById("password")
+                    .value;
+
+
+                mensaje.style.color = "#FFD166";
+                mensaje.textContent = "Verificando...";
+                botonLogin.disabled = true;
+
+
+                try {
+
+                    const { data, error } =
+                        await supabaseClient.auth.signInWithPassword({
+                            email: correo,
+                            password: password
+                        });
+
+
+                    if (error) {
+
+                        mensaje.style.color = "#FF6B6B";
+
+                        if (error.message.includes("Email not confirmed")) {
+
+                            mensaje.textContent =
+                                "Debes confirmar tu correo antes de iniciar sesión.";
+
+                        } else {
+
+                            mensaje.textContent =
+                                "Inicio de sesión inválido. Verifica tus credenciales.";
+
+                        }
+
+                        botonLogin.disabled = false;
+
+                        return;
+                    }
+
+
+                    mensaje.style.color = "#FFD166";
+                    mensaje.textContent = "Inicio de sesión correcto.";
+
+                    window.location.href = "home.html";
+
+
+                } catch (error) {
+
+                    console.error("Error al iniciar sesión:", error);
+
+                    mensaje.style.color = "#FF6B6B";
+                    mensaje.textContent =
+                        "Ocurrió un error. Intenta de nuevo.";
+
+                    botonLogin.disabled = false;
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>
