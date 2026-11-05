@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ApuestaHub - Iniciar Sesión</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .contenedor {
+            width: 100%;
+            max-width: 430px;
+
+            background: #151515;
+
+            border: 1px solid #2A2A2A;
+            border-radius: 18px;
+
+            padding: 40px;
+
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo h1 {
+            font-size: 38px;
+            color: #FFFFFF;
+            font-weight: 800;
+        }
+
+        .logo h1 span {
+            color: #F59E0B;
+        }
+
+        .logo p {
+            color: #999999;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .titulo {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .subtitulo {
+            color: #999999;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 8px;
+
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .campo input {
+            width: 100%;
+
+            padding: 14px;
+
+            background: #0F0F0F;
+
+            border: 1px solid #333333;
+            border-radius: 9px;
+
+            color: #FFFFFF;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.3s;
+        }
+
+        .campo input:focus {
+            border-color: #F59E0B;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.12);
+        }
+
+        .boton {
+            width: 100%;
+
+            padding: 14px;
+
+            background: #F59E0B;
+
+            border: none;
+            border-radius: 9px;
+
+            color: #000000;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 8px;
+
+            transition: 0.3s;
+        }
+
+        .boton:hover {
+            background: #FFD166;
+            transform: translateY(-1px);
+        }
+
+        .mensaje {
+            min-height: 20px;
+
+            margin-top: 15px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            color: #FF6B6B;
+        }
+
+        .registro {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #999999;
+
+            font-size: 14px;
+        }
+
+        .registro a {
+            color: #FFD166;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .registro a:hover {
+            color: #F59E0B;
+        }
+
+        .linea {
+            height: 1px;
+
+            background: #2A2A2A;
+
+            margin: 25px 0;
+        }
+
+        .informacion {
+            text-align: center;
+
+            color: #666666;
+
+            font-size: 12px;
+
+            margin-top: 20px;
+        }
+
+        @media (max-width: 500px) {
+
+            .contenedor {
+                padding: 30px 22px;
+            }
+
+            .logo h1 {
+                font-size: 32px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="contenedor">
+
+
+        <div class="logo">
+
+            <h1>
+                Apuesta<span>Hub</span>
+            </h1>
+
+            <p>
+                Información y comparación de plataformas
+            </p>
+
+        </div>
+
+
+        <h2 class="titulo">
+            Iniciar sesión
+        </h2>
+
+
+        <p class="subtitulo">
+            Ingresa a tu cuenta para acceder al panel principal.
+        </p>
+
+
+        <form id="formLogin">
+
+
+            <div class="campo">
+
+                <label for="usuario">
+                    Usuario
+                </label>
+
+                <input
+                    type="text"
+                    id="usuario"
+                    placeholder="Ingresa tu usuario"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="password">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Ingresa tu contraseña"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="boton"
+            >
+                Iniciar sesión
+            </button>
+
+
+            <p
+                id="mensaje"
+                class="mensaje"
+            ></p>
+
+
+        </form>
+
+
+        <div class="linea"></div>
+
+
+        <div class="registro">
+
+            ¿No tienes una cuenta?
+
+            <a href="registro.html">
+                Crear cuenta
+            </a>
+
+
+<script>
+    const formularioLogin = document.getElementById("formLogin");
+
+    formularioLogin.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const usuario = document.getElementById("usuario").value.trim();
+        const password = document.getElementById("password").value;
+        const mensaje = document.getElementById("mensaje");
+
+        let usuarios = [];
+
+        try {
+            const datos = localStorage.getItem("usuariosApuestaHub");
+
+            if (datos !== null) {
+                usuarios = JSON.parse(datos);
+            }
+        } catch (error) {
+            console.error("Error al leer los usuarios:", error);
+            usuarios = [];
+        }
+
+        const usuarioEncontrado = usuarios.find(function(usuarioGuardado) {
+            return (
+                usuarioGuardado.usuario === usuario &&
+                usuarioGuardado.password === password
+            );
+        });
+
+        if (usuarioEncontrado) {
+
+            // Guardar la sesión
+            localStorage.setItem(
+                "sesionApuestaHub",
+                usuarioEncontrado.usuario
+            );
+
+            mensaje.style.color = "#FFD166";
+            mensaje.textContent = "Inicio de sesión correcto.";
+
+            // Ir directamente al Home
+            window.location.href = "home.html";
+
+        } else {
+
+            mensaje.style.color = "#FF6B6B";
+            mensaje.textContent =
+                "Inicio de sesión inválido. Verifica tus credenciales.";
+        }
+    });
+</script>
+
+
+

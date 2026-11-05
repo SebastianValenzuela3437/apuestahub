@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ApuestaHub - Crear Cuenta</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: #0A0A0A;
+
+            color: #FFFFFF;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .contenedor {
+
+            width: 100%;
+
+            max-width: 450px;
+
+            background: #151515;
+
+            border: 1px solid #2A2A2A;
+
+            border-radius: 18px;
+
+            padding: 40px;
+
+            box-shadow:
+                0 15px 45px
+                rgba(0, 0, 0, 0.7);
+        }
+
+        .logo {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+
+            font-size: 38px;
+
+            color: #FFFFFF;
+
+            font-weight: 800;
+        }
+
+        .logo h1 span {
+
+            color: #F59E0B;
+        }
+
+        .logo p {
+
+            color: #999999;
+
+            margin-top: 8px;
+
+            font-size: 14px;
+        }
+
+        .titulo {
+
+            font-size: 25px;
+
+            margin-bottom: 8px;
+        }
+
+        .subtitulo {
+
+            color: #999999;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+        }
+
+        .campo {
+
+            margin-bottom: 18px;
+        }
+
+        .campo label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        .campo input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            background: #0F0F0F;
+
+            border: 1px solid #333333;
+
+            border-radius: 9px;
+
+            color: #FFFFFF;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.3s;
+        }
+
+        .campo input:focus {
+
+            border-color: #F59E0B;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(245, 158, 11, 0.12);
+        }
+
+        .boton {
+
+            width: 100%;
+
+            padding: 14px;
+
+            background: #F59E0B;
+
+            border: none;
+
+            border-radius: 9px;
+
+            color: #000000;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+            transition: 0.3s;
+        }
+
+        .boton:hover {
+
+            background: #FFD166;
+
+            transform: translateY(-1px);
+        }
+
+        .mensaje {
+
+            min-height: 20px;
+
+            margin-top: 15px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            color: #FF6B6B;
+        }
+
+        .login {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #999999;
+
+            font-size: 14px;
+        }
+
+        .login a {
+
+            color: #FFD166;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .login a:hover {
+
+            color: #F59E0B;
+        }
+
+        .linea {
+
+            height: 1px;
+
+            background: #2A2A2A;
+
+            margin: 25px 0;
+        }
+
+        .informacion {
+
+            text-align: center;
+
+            color: #666666;
+
+            font-size: 12px;
+
+            margin-top: 20px;
+        }
+
+        @media (max-width: 500px) {
+
+            .contenedor {
+
+                padding: 30px 22px;
+            }
+
+            .logo h1 {
+
+                font-size: 32px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="contenedor">
+
+
+        <div class="logo">
+
+            <h1>
+                Apuesta<span>Hub</span>
+            </h1>
+
+            <p>
+                Información y comparación de plataformas
+            </p>
+
+        </div>
+
+
+        <h2 class="titulo">
+            Crear cuenta
+        </h2>
+
+
+        <p class="subtitulo">
+            Regístrate para acceder al panel de ApuestaHub.
+        </p>
+
+
+        <form id="formRegistro">
+
+
+            <div class="campo">
+
+                <label for="usuario">
+                    Usuario
+                </label>
+
+                <input
+                    type="text"
+                    id="usuario"
+                    placeholder="Crea tu nombre de usuario"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="password">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Mínimo 4 caracteres"
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="confirmarPassword">
+                    Confirmar contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmarPassword"
+                    placeholder="Repite tu contraseña"
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="boton"
+            >
+                Crear cuenta
+            </button>
+
+
+            <p
+                id="mensaje"
+                class="mensaje"
+            ></p>
+
+
+        </form>
+
+
+        <div class="linea"></div>
+
+
+        <div class="login">
+
+            ¿Ya tienes una cuenta?
+
+            <a href="index.html">
+                Iniciar sesión
+            </a>
+
+        </div>
+
+
+        <p class="informacion">
+            ApuestaHub es un proyecto académico informativo.
+        </p>
+
+
+    </div>
+
+
+    <script>
+
+        const formularioRegistro =
+            document.getElementById("formRegistro");
+
+
+        formularioRegistro.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                const usuario =
+                    document.getElementById("usuario")
+                    .value
+                    .trim();
+
+
+                const password =
+                    document.getElementById("password")
+                    .value;
+
+
+                const confirmarPassword =
+                    document.getElementById("confirmarPassword")
+                    .value;
+
+
+                const mensaje =
+                    document.getElementById("mensaje");
+
+
+                mensaje.style.color = "#FF6B6B";
+
+                mensaje.textContent = "";
+
+
+                if (usuario.length < 3) {
+
+                    mensaje.textContent =
+                        "El usuario debe tener mínimo 3 caracteres.";
+
+                    return;
+                }
+
+
+                if (password.length < 4) {
+
+                    mensaje.textContent =
+                        "La contraseña debe tener mínimo 4 caracteres.";
+
+                    return;
+                }
+
+
+                if (password !== confirmarPassword) {
+
+                    mensaje.textContent =
+                        "Las contraseñas no coinciden.";
+
+                    return;
+                }
+
+
+                let usuarios = [];
+
+
+                try {
+
+                    const datos =
+                        localStorage.getItem(
+                            "usuariosApuestaHub"
+                        );
+
+
+                    if (datos !== null) {
+
+                        usuarios = JSON.parse(datos);
+
+                    }
+
+                } catch (error) {
+
+                    usuarios = [];
+
+                }
+
+
+                const usuarioExiste =
+                    usuarios.some(function(usuarioGuardado) {
+
+                        return (
+                            usuarioGuardado.usuario.toLowerCase() ===
+                            usuario.toLowerCase()
+                        );
+
+                    });
+
+
+                if (usuarioExiste) {
+
+                    mensaje.textContent =
+                        "Ese usuario ya está registrado.";
+
+                    return;
+                }
+
+
+                usuarios.push({
+
+                    usuario: usuario,
+
+                    password: password
+
+                });
+
+
+                localStorage.setItem(
+
+                    "usuariosApuestaHub",
+
+                    JSON.stringify(usuarios)
+
+                );
+
+
+                mensaje.style.color = "#FFD166";
+
+                mensaje.textContent =
+                    "Cuenta creada correctamente.";
+
+
+                setTimeout(function() {
+
+                    window.location.href = "index.html";
+
+                }, 1000);
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>
