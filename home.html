@@ -5,34 +5,30 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ApuestaHub - Inicio</title>
 
+    <!-- Librería de Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
 
         * {
             box-sizing: border-box;
-
             margin: 0;
-
             padding: 0;
         }
 
 
         body {
-
             font-family: Arial, Helvetica, sans-serif;
-
             background: #0A0A0A;
-
             color: #FFFFFF;
-
             min-height: 100vh;
+
+            /* Oculto hasta verificar la sesión */
+            visibility: hidden;
         }
 
 
@@ -41,161 +37,107 @@
         ========================= */
 
         header {
-
             width: 100%;
-
             background: #111111;
-
             border-bottom: 1px solid #2B2B2B;
-
             padding: 15px 5%;
 
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
-
             gap: 20px;
 
             position: sticky;
-
             top: 0;
-
             z-index: 100;
         }
 
 
         .logo {
-
             font-size: 26px;
-
             font-weight: 800;
-
             white-space: nowrap;
         }
 
 
         .logo span {
-
             color: #F59E0B;
         }
 
 
         .controles {
-
             display: flex;
-
             align-items: center;
-
             justify-content: flex-end;
-
             gap: 10px;
-
             flex-wrap: wrap;
         }
 
 
         .busqueda input {
-
             width: 220px;
-
             padding: 10px 13px;
-
             background: #1A1A1A;
-
             border: 1px solid #333333;
-
             border-radius: 8px;
-
             color: #FFFFFF;
-
             outline: none;
         }
 
 
         .busqueda input:focus {
-
             border-color: #F59E0B;
         }
 
 
         select {
-
             padding: 10px 12px;
-
             background: #1A1A1A;
-
             border: 1px solid #333333;
-
             border-radius: 8px;
-
             color: #FFFFFF;
-
             outline: none;
-
             cursor: pointer;
         }
 
 
         select:focus {
-
             border-color: #F59E0B;
         }
 
 
         .usuario {
-
             display: flex;
-
             align-items: center;
-
             gap: 7px;
-
             color: #FFFFFF;
-
             font-size: 14px;
-
             padding: 8px 11px;
-
             background: #1A1A1A;
-
             border-radius: 8px;
-
             border: 1px solid #2E2E2E;
         }
 
 
         .usuario-icono {
-
             font-size: 16px;
         }
 
 
         .boton-salir {
-
             padding: 10px 14px;
-
             border: 1px solid #F59E0B;
-
             background: transparent;
-
             color: #FFD166;
-
             border-radius: 8px;
-
             cursor: pointer;
-
             font-weight: bold;
-
             transition: 0.3s;
         }
 
 
         .boton-salir:hover {
-
             background: #F59E0B;
-
             color: #000000;
         }
 
@@ -205,11 +147,8 @@
         ========================= */
 
         .contenedor-principal {
-
             width: 90%;
-
             max-width: 1250px;
-
             margin: auto;
         }
 
@@ -219,11 +158,8 @@
         ========================= */
 
         .hero {
-
             margin-top: 35px;
-
             padding: 45px;
-
             border-radius: 18px;
 
             background:
@@ -235,61 +171,41 @@
                 );
 
             border: 1px solid #2E2E2E;
-
             position: relative;
-
             overflow: hidden;
         }
 
 
         .hero::after {
-
             content: "";
-
             position: absolute;
-
             width: 250px;
-
             height: 250px;
-
             background: #F59E0B;
-
             opacity: 0.06;
-
             border-radius: 50%;
-
             right: -70px;
-
             top: -80px;
         }
 
 
         .hero h1 {
-
             font-size: 42px;
-
             line-height: 1.1;
-
             margin-bottom: 15px;
-
             max-width: 700px;
         }
 
 
         .hero h1 span {
-
             color: #F59E0B;
         }
 
 
         .hero p {
-
             color: #B8B8B8;
-
             max-width: 700px;
-
             line-height: 1.6;
-
             font-size: 16px;
         }
 
@@ -299,76 +215,53 @@
         ========================= */
 
         .estadisticas {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
+            grid-template-columns: repeat(3, 1fr);
             gap: 14px;
-
             margin: 22px 0 35px;
         }
 
 
         .estadistica {
-
             background: #151515;
-
             border: 1px solid #2B2B2B;
-
             border-radius: 12px;
-
             padding: 17px 20px;
 
             display: flex;
-
             align-items: center;
-
             justify-content: space-between;
 
             min-height: 75px;
-
             transition: 0.3s;
         }
 
 
         .estadistica:hover {
-
             border-color: #F59E0B;
-
             transform: translateY(-2px);
         }
 
 
         .estadistica-texto {
-
             color: #999999;
-
             font-size: 13px;
         }
 
 
         .estadistica-numero {
-
             font-size: 25px;
-
             font-weight: bold;
-
             color: #FFFFFF;
         }
 
 
-        .estadistica:nth-child(2)
-        .estadistica-numero {
-
+        .estadistica:nth-child(2) .estadistica-numero {
             color: #FFD166;
         }
 
 
-        .estadistica:nth-child(3)
-        .estadistica-numero {
-
+        .estadistica:nth-child(3) .estadistica-numero {
             color: #F59E0B;
         }
 
@@ -378,27 +271,20 @@
         ========================= */
 
         .titulo-seccion {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: end;
-
             margin-bottom: 20px;
         }
 
 
         .titulo-seccion h2 {
-
             font-size: 27px;
         }
 
 
         .titulo-seccion p {
-
             color: #777777;
-
             font-size: 13px;
         }
 
@@ -408,210 +294,139 @@
         ========================= */
 
         .contenedor-tarjetas {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-
             padding-bottom: 50px;
         }
 
 
         .tarjeta {
-
             background: #151515;
-
             border: 1px solid #2A2A2A;
-
             border-radius: 15px;
-
             overflow: hidden;
-
             transition: 0.3s;
 
             display: flex;
-
             flex-direction: column;
         }
 
 
         .tarjeta:hover {
-
             transform: translateY(-5px);
-
             border-color: #F59E0B;
-
-            box-shadow:
-                0 10px 30px
-                rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
 
         .imagen-contenedor {
-
             height: 145px;
-
             background: #0F0F0F;
 
             display: flex;
-
             justify-content: center;
-
             align-items: center;
 
             padding: 18px;
-
             border-bottom: 1px solid #292929;
         }
 
 
         .imagen-contenedor img {
-
             max-width: 90%;
-
             max-height: 105px;
-
             object-fit: contain;
         }
 
 
         .imagen-error {
-
             color: #666666;
-
             font-size: 13px;
-
             text-align: center;
         }
 
 
         .contenido-tarjeta {
-
             padding: 18px;
-
             display: flex;
-
             flex-direction: column;
-
             flex: 1;
         }
 
 
         .categoria {
-
             display: inline-block;
-
             width: fit-content;
-
             padding: 5px 9px;
-
             border-radius: 5px;
-
             font-size: 11px;
-
             font-weight: bold;
-
             text-transform: uppercase;
-
             background: #2A200D;
-
             color: #FFD166;
-
             margin-bottom: 10px;
         }
 
 
         .categoria.casino {
-
             background: #33220A;
-
             color: #F59E0B;
         }
 
 
         .contenido-tarjeta h3 {
-
             font-size: 20px;
-
             margin-bottom: 9px;
         }
 
 
         .descripcion {
-
             color: #999999;
-
             font-size: 13px;
-
             line-height: 1.5;
-
             margin-bottom: 14px;
-
             flex: 1;
         }
 
 
         .calificacion {
-
             margin-bottom: 15px;
-
             display: flex;
-
             align-items: center;
-
             gap: 8px;
         }
 
 
         .estrellas {
-
             color: #F59E0B;
-
             font-size: 17px;
-
             letter-spacing: 1px;
         }
 
 
         .numero-calificacion {
-
             color: #888888;
-
             font-size: 12px;
         }
 
 
         .boton-visitar {
-
             display: block;
-
             width: 100%;
-
             text-align: center;
-
             text-decoration: none;
-
             padding: 11px;
-
             border-radius: 7px;
-
             background: #F59E0B;
-
             color: #000000;
-
             font-weight: bold;
-
             font-size: 13px;
-
             transition: 0.3s;
         }
 
 
         .boton-visitar:hover {
-
             background: #FFD166;
         }
 
@@ -621,17 +436,11 @@
         ========================= */
 
         .sin-resultados {
-
             grid-column: 1 / -1;
-
             padding: 50px 20px;
-
             text-align: center;
-
             border: 1px dashed #333333;
-
             border-radius: 12px;
-
             color: #777777;
         }
 
@@ -641,25 +450,17 @@
         ========================= */
 
         footer {
-
             border-top: 1px solid #242424;
-
             background: #0D0D0D;
-
             padding: 25px 5%;
-
             text-align: center;
-
             color: #666666;
-
             font-size: 12px;
-
             line-height: 1.6;
         }
 
 
         footer strong {
-
             color: #F59E0B;
         }
 
@@ -671,13 +472,10 @@
         @media (max-width: 1050px) {
 
             .contenedor-tarjetas {
-
-                grid-template-columns:
-                    repeat(3, 1fr);
+                grid-template-columns: repeat(3, 1fr);
             }
 
             .busqueda input {
-
                 width: 180px;
             }
 
@@ -687,54 +485,36 @@
         @media (max-width: 800px) {
 
             header {
-
                 align-items: flex-start;
-
                 flex-direction: column;
             }
 
-
             .controles {
-
                 width: 100%;
-
                 justify-content: flex-start;
             }
 
-
             .busqueda {
-
                 flex: 1;
             }
 
-
             .busqueda input {
-
                 width: 100%;
             }
 
-
             .estadisticas {
-
                 grid-template-columns: 1fr;
             }
 
-
             .contenedor-tarjetas {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
 
-
             .hero {
-
                 padding: 32px 25px;
             }
 
-
             .hero h1 {
-
                 font-size: 34px;
             }
 
@@ -744,63 +524,43 @@
         @media (max-width: 550px) {
 
             .contenedor-principal {
-
                 width: 92%;
             }
 
-
             .controles {
-
                 flex-direction: column;
-
                 align-items: stretch;
             }
 
-
             .busqueda {
-
                 width: 100%;
             }
-
 
             .controles select,
             .usuario,
             .boton-salir {
-
                 width: 100%;
             }
 
-
             .usuario {
-
                 justify-content: center;
             }
 
-
             .contenedor-tarjetas {
-
                 grid-template-columns: 1fr;
             }
 
-
             .hero {
-
                 margin-top: 20px;
-
                 padding: 28px 20px;
             }
 
-
             .hero h1 {
-
                 font-size: 30px;
             }
 
-
             .titulo-seccion {
-
                 align-items: flex-start;
-
                 flex-direction: column;
             }
 
@@ -812,27 +572,6 @@
 
 
 <body>
-
-
-    <!--
-        ========================================
-        CONTROL DE SESION
-        ========================================
-    -->
-
-    <script>
-
-        const sesionInicial =
-            localStorage.getItem("sesionApuestaHub");
-
-
-        if (!sesionInicial) {
-
-            window.location.href = "index.html";
-
-        }
-
-    </script>
 
 
     <!-- HEADER -->
@@ -1053,18 +792,17 @@
 
 
         /* ========================================
-           SESION
+           CONEXIÓN A SUPABASE
+           Reemplaza estos dos valores por los tuyos
         ======================================== */
 
-        const sesion =
-            localStorage.getItem(
-                "sesionApuestaHub"
-            );
+        const SUPABASE_URL = "https://TU_PROYECTO.supabase.co";
+        const SUPABASE_KEY = "TU_CLAVE_PUBLICA";   // Publishable key o anon key
 
-
-        document.getElementById(
-            "nombreUsuario"
-        ).textContent = sesion;
+        const supabaseClient = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
 
 
         /* ========================================
@@ -1075,137 +813,82 @@
 
             {
                 nombre: "BetPlay",
-
                 categoria: "deportes",
-
                 descripcion:
                     "Plataforma enfocada principalmente en apuestas deportivas y eventos deportivos.",
-
                 imagen: "https://www.gamingintelligence.com/es/wp-content/uploads/sites/4/2020/09/betplay.jpg",
-
                 rating: 5,
-
-                enlace:
-                    "https://www.betplay.com.co"
+                enlace: "https://www.betplay.com.co"
             },
-
 
             {
                 nombre: "Wplay",
-
                 categoria: "deportes",
-
                 descripcion:
                     "Plataforma con diferentes mercados de apuestas deportivas y eventos en vivo.",
-
                 imagen: "https://blog.wplay.co/wp-content/uploads/2022/09/Sin-ti%CC%81tulo-1.png",
-
                 rating: 4,
-
-                enlace:
-                    "https://www.wplay.co"
+                enlace: "https://www.wplay.co"
             },
-
 
             {
                 nombre: "RushBet",
-
                 categoria: "deportes",
-
                 descripcion:
                     "Servicio orientado a las apuestas deportivas y diferentes eventos internacionales.",
-
                 imagen: "https://images.seeklogo.com/logo-png/54/1/rushbet-logo-png_seeklogo-547312.png",
-
                 rating: 4,
-
-                enlace:
-                    "https://www.rushbet.co"
+                enlace: "https://www.rushbet.co"
             },
-
 
             {
                 nombre: "Betano",
-
                 categoria: "deportes",
-
                 descripcion:
                     "Plataforma internacional conocida por su variedad de mercados deportivos.",
-
                 imagen: "https://1000marcas.net/wp-content/uploads/2026/03/Betano-Logo.jpg",
-
                 rating: 5,
-
-                enlace:
-                    "https://www.betano.co"
+                enlace: "https://www.betano.co"
             },
-
 
             {
                 nombre: "bwin",
-
                 categoria: "deportes",
-
                 descripcion:
                     "Plataforma internacional con una amplia oferta de apuestas deportivas.",
-
-                imagen: "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Bwin.svg/1280px-Bwin.svg.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail",
-
+                imagen: "https://blogs-entain-media.s3.eu-west-1.amazonaws.com/bwinco/es/blog/wp-content/uploads/2021/09/08011907/bwin-em-Portugal.png",
                 rating: 4,
-
-                enlace:
-                    "https://www.bwin.com"
+                enlace: "https://www.bwin.com"
             },
-
 
             {
                 nombre: "Stake",
-
                 categoria: "casino",
-
                 descripcion:
                     "Plataforma digital con una importante oferta de juegos de casino y entretenimiento.",
-
                 imagen: "https://apuestasglobales.com/wp-content/uploads/2024/09/Stake-apuestas-sitio-oficial.jpg",
-
                 rating: 4,
-
-                enlace:
-                    "https://stake.com"
+                enlace: "https://stake.com"
             },
-
 
             {
                 nombre: "RIVALO",
-
                 categoria: "casino",
-
                 descripcion:
                     "Plataforma orientada al entretenimiento de casino y diferentes juegos digitales.",
-
                 imagen: "https://mir-s3-cdn-cf.behance.net/projects/404/d60b9e92841275.Y3JvcCw5NTIsNzQ1LDYzLDE2Nw.jpg",
-
                 rating: 4,
-
-                enlace:
-                    "https://www.rivalo.co"
+                enlace: "https://www.rivalo.co"
             },
-
 
             {
                 nombre: "Betsson",
-
                 categoria: "casino",
-
                 descripcion:
                     "Plataforma especializada en entretenimiento de casino y juegos digitales.",
-
                 imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrDfl7xvEp1-AyFQ6uqeas68qPtZKImWauvFDjG9CbSzilBkWTiibFr_DA&s=10",
-
                 rating: 4,
-
-                enlace:
-                    "https://www.betsson.co"
+                enlace: "https://www.betsson.co"
             }
 
         ];
@@ -1216,21 +899,13 @@
         ======================================== */
 
         const contenedor =
-            document.getElementById(
-                "contenedorTarjetas"
-            );
-
+            document.getElementById("contenedorTarjetas");
 
         const busqueda =
-            document.getElementById(
-                "busqueda"
-            );
-
+            document.getElementById("busqueda");
 
         const filtro =
-            document.getElementById(
-                "filtroCategoria"
-            );
+            document.getElementById("filtroCategoria");
 
 
         /* ========================================
@@ -1241,25 +916,15 @@
 
             let resultado = "";
 
-
-            for (
-                let i = 1;
-                i <= 5;
-                i++
-            ) {
+            for (let i = 1; i <= 5; i++) {
 
                 if (i <= rating) {
-
                     resultado += "★";
-
                 } else {
-
                     resultado += "☆";
-
                 }
 
             }
-
 
             return resultado;
         }
@@ -1271,12 +936,10 @@
 
         function mostrarPlataformas() {
 
-
             const textoBusqueda =
                 busqueda.value
                 .toLowerCase()
                 .trim();
-
 
             const categoriaSeleccionada =
                 filtro.value;
@@ -1285,23 +948,16 @@
             const resultados =
                 sitios.filter(function(sitio) {
 
-
                     const coincideNombre =
                         sitio.nombre
                         .toLowerCase()
                         .includes(textoBusqueda);
 
-
                     const coincideCategoria =
                         categoriaSeleccionada === "todos" ||
-                        sitio.categoria ===
-                        categoriaSeleccionada;
+                        sitio.categoria === categoriaSeleccionada;
 
-
-                    return (
-                        coincideNombre &&
-                        coincideCategoria
-                    );
+                    return coincideNombre && coincideCategoria;
 
                 });
 
@@ -1328,22 +984,16 @@
 
             resultados.forEach(function(sitio) {
 
-
                 const tarjeta =
-                    document.createElement(
-                        "article"
-                    );
+                    document.createElement("article");
 
-
-                tarjeta.className =
-                    "tarjeta";
+                tarjeta.className = "tarjeta";
 
 
                 const nombreCategoria =
                     sitio.categoria === "deportes"
                         ? "Deportes"
                         : "Casino";
-
 
                 const claseCategoria =
                     sitio.categoria === "casino"
@@ -1366,49 +1016,29 @@
 
                     <div class="contenido-tarjeta">
 
-
                         <span class="${claseCategoria}">
-
                             ${nombreCategoria}
-
                         </span>
 
-
                         <h3>
-
                             ${sitio.nombre}
-
                         </h3>
 
-
                         <p class="descripcion">
-
                             ${sitio.descripcion}
-
                         </p>
-
 
                         <div class="calificacion">
 
-
                             <span class="estrellas">
-
-                                ${generarEstrellas(
-                                    sitio.rating
-                                )}
-
+                                ${generarEstrellas(sitio.rating)}
                             </span>
-
 
                             <span class="numero-calificacion">
-
                                 ${sitio.rating}/5
-
                             </span>
 
-
                         </div>
-
 
                         <a
                             class="boton-visitar"
@@ -1416,20 +1046,15 @@
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-
                             Visitar plataforma
-
                         </a>
-
 
                     </div>
 
                 `;
 
 
-                contenedor.appendChild(
-                    tarjeta
-                );
+                contenedor.appendChild(tarjeta);
 
             });
 
@@ -1442,99 +1067,120 @@
 
         function actualizarEstadisticas() {
 
-
             const deportes =
                 sitios.filter(function(sitio) {
-
-                    return (
-                        sitio.categoria ===
-                        "deportes"
-                    );
-
+                    return sitio.categoria === "deportes";
                 }).length;
-
 
             const casino =
                 sitios.filter(function(sitio) {
-
-                    return (
-                        sitio.categoria ===
-                        "casino"
-                    );
-
+                    return sitio.categoria === "casino";
                 }).length;
 
-
-            document.getElementById(
-                "totalPlataformas"
-            ).textContent =
+            document.getElementById("totalPlataformas").textContent =
                 sitios.length;
 
-
-            document.getElementById(
-                "totalDeportes"
-            ).textContent =
+            document.getElementById("totalDeportes").textContent =
                 deportes;
 
-
-            document.getElementById(
-                "totalCasino"
-            ).textContent =
+            document.getElementById("totalCasino").textContent =
                 casino;
 
         }
 
 
         /* ========================================
-           BUSQUEDA
+           BUSQUEDA Y FILTRO
         ======================================== */
 
-        busqueda.addEventListener(
-            "input",
-            mostrarPlataformas
-        );
+        busqueda.addEventListener("input", mostrarPlataformas);
 
-
-        /* ========================================
-           FILTRO
-        ======================================== */
-
-        filtro.addEventListener(
-            "change",
-            mostrarPlataformas
-        );
+        filtro.addEventListener("change", mostrarPlataformas);
 
 
         /* ========================================
            CERRAR SESION
         ======================================== */
 
-        document.getElementById(
-            "cerrarSesion"
-        ).addEventListener(
+        document.getElementById("cerrarSesion").addEventListener(
             "click",
-            function() {
+            async function() {
 
+                try {
+                    await supabaseClient.auth.signOut();
+                } catch (error) {
+                    console.error("Error al cerrar sesión:", error);
+                }
 
-                localStorage.removeItem(
-                    "sesionApuestaHub"
-                );
-
-
-                window.location.href =
-                    "index.html";
+                window.location.href = "index.html";
 
             }
         );
 
 
         /* ========================================
-           INICIAR HOME
+           CONTROL DE SESION
+           Si no hay sesión, vuelve al login
         ======================================== */
 
-        actualizarEstadisticas();
+        async function iniciarHome() {
 
-        mostrarPlataformas();
+            let sesion = null;
+
+            try {
+
+                const { data } =
+                    await supabaseClient.auth.getSession();
+
+                sesion = data.session;
+
+            } catch (error) {
+
+                console.error("Error al revisar la sesión:", error);
+
+            }
+
+
+            if (!sesion) {
+
+                window.location.href = "index.html";
+
+                return;
+            }
+
+
+            /* Nombre a mostrar: usuario (guardado al registrarse) o correo */
+
+            const nombre =
+                (sesion.user.user_metadata &&
+                 sesion.user.user_metadata.usuario) ||
+                sesion.user.email;
+
+            document.getElementById("nombreUsuario").textContent =
+                nombre;
+
+
+            actualizarEstadisticas();
+
+            mostrarPlataformas();
+
+            document.body.style.visibility = "visible";
+
+        }
+
+
+        /* Si la sesión se cierra en otra pestaña, vuelve al login */
+
+        supabaseClient.auth.onAuthStateChange(function(evento) {
+
+            if (evento === "SIGNED_OUT") {
+                window.location.href = "index.html";
+            }
+
+        });
+
+
+        iniciarHome();
 
 
     </script>
