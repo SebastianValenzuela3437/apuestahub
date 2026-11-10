@@ -432,6 +432,82 @@
 
 
         /* =========================
+           RESEÑAS CON ESTRELLAS
+        ========================= */
+
+        .resena {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #0F0F0F;
+            border: 1px solid #262626;
+            border-radius: 9px;
+        }
+
+
+        .resena-titulo {
+            display: block;
+            color: #999999;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+
+        .estrellas-input {
+            display: flex;
+            gap: 2px;
+        }
+
+
+        .estrella-btn {
+            background: none;
+            border: none;
+            padding: 0 1px;
+            font-size: 26px;
+            line-height: 1;
+            color: #444444;
+            cursor: pointer;
+            transition: transform 0.15s, color 0.15s;
+        }
+
+
+        .estrella-btn.activa {
+            color: #F59E0B;
+        }
+
+
+        /* Al pasar el mouse: se iluminan hasta la estrella señalada */
+
+        .estrellas-input:hover .estrella-btn {
+            color: #FFD166;
+        }
+
+
+        .estrella-btn:hover ~ .estrella-btn {
+            color: #444444;
+        }
+
+
+        .estrella-btn:hover {
+            transform: scale(1.15);
+        }
+
+
+        .estrella-btn:focus-visible {
+            outline: 2px solid #F59E0B;
+            border-radius: 4px;
+        }
+
+
+        .resena-msg {
+            display: block;
+            min-height: 16px;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #FFD166;
+        }
+
+
+        /* =========================
            SIN RESULTADOS
         ========================= */
 
@@ -856,7 +932,7 @@
                 categoria: "deportes",
                 descripcion:
                     "Plataforma internacional con una amplia oferta de apuestas deportivas.",
-                imagen: "https://www.apuestas-colombia.vip/wp-content/uploads/sites/31/2024/04/bwin-logo-mini.jpg",
+                imagen: "https://blogs-entain-media.s3.eu-west-1.amazonaws.com/bwinco/es/blog/wp-content/uploads/2021/09/08011907/bwin-em-Portugal.png",
                 rating: 4,
                 enlace: "https://www.bwin.com"
             },
@@ -928,6 +1004,205 @@
 
             return resultado;
         }
+
+
+        /* ========================================
+           RESEÑAS (Supabase)
+        ======================================== */
+
+        let usuarioId = null;       // id del usuario con sesión
+        let resumenResenas = {};    // { plataforma: { promedio, total } }
+        let misResenas = {};        // { plataforma: estrellas }
+
+
+        async function cargarResenas() {
+
+            try {
+
+                const respuestaResumen =
+                    await supabaseClient.rpc("resumen_resenas");
+
+                const respuestaMias =
+                    await supabaseClient
+                        .from("resenas")
+                        .select("plataforma, estrellas")
+                        .eq("usuario_id", usuarioId);
+
+
+                if (respuestaResumen.error) {
+                    console.error("Error al cargar promedios:", respuestaResumen.error);
+                }
+
+                if (respuestaMias.error) {
+                    console.error("Error al cargar mis reseñas:", respuestaMias.error);
+                }
+
+
+                resumenResenas = {};
+
+                (respuestaResumen.data || []).forEach(function(fila) {
+
+                    resumenResenas[fila.plataforma] = {
+                        promedio: Number(fila.promedio),
+                        total: Number(fila.total)
+                    };
+
+                });
+
+
+                misResenas = {};
+
+                (respuestaMias.data || []).forEach(function(fila) {
+
+                    misResenas[fila.plataforma] = fila.estrellas;
+
+                });
+
+            } catch (error) {
+
+                console.error("Error al cargar reseñas:", error);
+
+            }
+
+        }
+
+
+        /* Calificación mostrada: promedio de usuarios o, si no hay, la referencial */
+
+        function datosCalificacion(sitio) {
+
+            const resumen = resumenResenas[sitio.nombre];
+
+            if (resumen && resumen.total > 0) {
+
+                return {
+                    valor: Math.round(resumen.promedio),
+                    texto:
+                        resumen.promedio.toFixed(1) + "/5 · " +
+                        resumen.total +
+                        (resumen.total === 1 ? " reseña" : " reseñas")
+                };
+
+            }
+
+            return {
+                valor: sitio.rating,
+                texto: sitio.rating + "/5 (referencial)"
+            };
+
+        }
+
+
+        /* Estrellas que el usuario puede pulsar para calificar */
+
+        function bloqueResena(sitio) {
+
+            const mia = misResenas[sitio.nombre] || 0;
+
+            let botones = "";
+
+            for (let n = 1; n <= 5; n++) {
+
+                botones +=
+                    '<button type="button" class="estrella-btn' +
+                    (n <= mia ? " activa" : "") +
+                    '" data-valor="' + n + '"' +
+                    ' aria-label="Calificar con ' + n +
+                    (n === 1 ? " estrella" : " estrellas") + '">★</button>';
+
+            }
+
+            return (
+                '<div class="resena">' +
+                    '<span class="resena-titulo">' +
+                        (mia ? "Tu calificación" : "Califica esta plataforma") +
+                    '</span>' +
+                    '<div class="estrellas-input" data-plataforma="' +
+                        sitio.nombre + '">' +
+                        botones +
+                    '</div>' +
+                    '<span class="resena-msg"></span>' +
+                '</div>'
+            );
+
+        }
+
+
+        function mostrarMensajeResena(plataforma, texto) {
+
+            document.querySelectorAll(".estrellas-input").forEach(function(grupo) {
+
+                if (grupo.dataset.plataforma === plataforma) {
+
+                    const msg = grupo.parentElement.querySelector(".resena-msg");
+
+                    if (msg) {
+                        msg.textContent = texto;
+                    }
+
+                }
+
+            });
+
+        }
+
+
+        async function guardarResena(plataforma, estrellas) {
+
+            const { error } =
+                await supabaseClient
+                    .from("resenas")
+                    .upsert(
+                        {
+                            usuario_id: usuarioId,
+                            plataforma: plataforma,
+                            estrellas: estrellas,
+                            actualizado_en: new Date().toISOString()
+                        },
+                        { onConflict: "usuario_id,plataforma" }
+                    );
+
+
+            if (error) {
+
+                console.error("Error al guardar la reseña:", error);
+
+                mostrarMensajeResena(
+                    plataforma,
+                    "No se pudo guardar. Intenta de nuevo."
+                );
+
+                return;
+            }
+
+
+            await cargarResenas();
+
+            mostrarPlataformas();
+
+            mostrarMensajeResena(plataforma, "¡Gracias por tu reseña!");
+
+        }
+
+
+        /* Clic en una estrella (delegación de eventos sobre las tarjetas) */
+
+        contenedor.addEventListener("click", function(evento) {
+
+            const boton = evento.target.closest(".estrella-btn");
+
+            if (!boton) {
+                return;
+            }
+
+            const grupo = boton.closest(".estrellas-input");
+
+            guardarResena(
+                grupo.dataset.plataforma,
+                Number(boton.dataset.valor)
+            );
+
+        });
 
 
         /* ========================================
@@ -1031,14 +1306,16 @@
                         <div class="calificacion">
 
                             <span class="estrellas">
-                                ${generarEstrellas(sitio.rating)}
+                                ${generarEstrellas(datosCalificacion(sitio).valor)}
                             </span>
 
                             <span class="numero-calificacion">
-                                ${sitio.rating}/5
+                                ${datosCalificacion(sitio).texto}
                             </span>
 
                         </div>
+
+                        ${bloqueResena(sitio)}
 
                         <a
                             class="boton-visitar"
@@ -1159,6 +1436,10 @@
             document.getElementById("nombreUsuario").textContent =
                 nombre;
 
+
+            usuarioId = sesion.user.id;
+
+            await cargarResenas();
 
             actualizarEstadisticas();
 
